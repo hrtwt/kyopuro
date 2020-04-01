@@ -23,6 +23,7 @@ RemoteSystemsTempFiles/
 
 ### acc files
 contest.acc.json
+*.in
 
 ### Compiled source
 *.com
