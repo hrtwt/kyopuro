@@ -7,9 +7,9 @@ void solve() {
     int n;
     cin >> n;
     vector<ll> ball(n);
-    vector<ll> count(n);
+    vector<ll> count(n+1);
 
-    for (auto &a:ball) {
+    for (auto &&a:ball) {
         cin >> a;
         ++count[a];
     }
