@@ -1,8 +1,12 @@
 #include <bits/stdc++.h>
 
-using namespace std;
+#define whole(f, x, ...) ([&](decltype((x)) whole) { return (f)(begin(whole), end(whole), ## __VA_ARGS__); })(x)
 
-int main() {
+
+using namespace std;
+using ll = long long;
+
+void solve() {
     int a, b;
     cin >> a >> b;
     string s;
@@ -17,4 +21,13 @@ int main() {
     if (chk()) {
         cout << "Yes";
     } else cout << "No";
+}
+
+int main() {
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    std::cout << std::fixed << std::setprecision(15);
+
+    solve();
+    return 0;
 }

@@ -6,6 +6,16 @@
 using namespace std;
 using ll = long long;
 
+template<class T>
+inline bool chmin(T &a, T b) {
+    if (a > b) {
+        a = b;
+        return true;
+    }
+    return false;
+}
+
+
 void solve() {
     int n, k;
     cin >> n >> k;
@@ -15,10 +25,10 @@ void solve() {
     }
 
     vector<ll> dp(n, numeric_limits<ll>::max());
-    dp[1] = abs(h[1] - h[0]);
-    for (int i = 1; i < n; ++i) {
-        for (int j = min(i, k) - 1; j > 0; --j) {
-            dp[i] = min(dp[i], abs(h[i] - h[i - j]) + dp[i - j]);
+    dp[0] = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 1; j <= k && i + j < n; ++j) {
+            chmin(dp[i + j], abs(h[i + j] - h[i]) + dp[i]);
         }
     }
     cout << dp[n - 1] << endl;
