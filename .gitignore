@@ -10,6 +10,9 @@ out/
 cmake-build-debug/
 CmakeLists.txt
 
+### VScode settings
+.vscode/
+
 ### Gradle
 gradle.properties
 
