@@ -12,12 +12,11 @@ void solve() {
   ll a, b, n;
   cin >> a >> b >> n;
 
-  ll ma = 0;
+  const ll x = min(b - 1, n);
 
-  for (ll i = 3 * n / 4; i <= n; i++) {
-    ma = max(ma, (ll)(floor(a * i / b) - a * floor(i / b)));
-  }
-  cout << ma << endl;
+  const ll ans = (floor(a * x / b) - a * floor(x / b));
+
+  std::cout << ans << endl;
 }
 
 int main() {
