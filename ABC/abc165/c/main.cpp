@@ -8,52 +8,39 @@
 using namespace std;
 using ll = long long;
 
-void recursive_comb(int *indexes, int s, int rest,
-                    std::function<void(int *)> f) {
-  if (rest == 0) {
-    f(indexes);
-  } else {
-    if (s < 0) return;
-    recursive_comb(indexes, s - 1, rest, f);
-    indexes[rest - 1] = s;
-    recursive_comb(indexes, s - 1, rest - 1, f);
-  }
-}
+int ans;
+vector<int> a, b, c, d, A;
+int n, m, q;
 
-void foreach_comb(int n, int k, std::function<void(int *)> f) {
-  int indexes[k];
-  recursive_comb(indexes, n - 1, k, f);
+void dfs(int k) {
+  if (k - 1 == n) {
+    int sum = 0;
+    for (int i = 0; i < q; i++) {
+      if (A[b[i]] - A[a[i]] == c[i]) sum += d[i];
+    }
+    ans = max(ans, sum);
+    return;
+  }
+  for (int i = A[k - 1]; i < m; i++) {
+    A[k] = i;
+    dfs(k + 1);
+  }
 }
 
 void solve() {
-  int n, m, q;
   cin >> n >> m >> q;
-  vector<int> a(q), b(q), c(q), d(q);
+  a.resize(q);
+  b.resize(q);
+  c.resize(q);
+  d.resize(q);
+  A.resize(n + 1);  // 1 based
+
   for (int i = 0; i < q; i++) {
     cin >> a[i] >> b[i] >> c[i] >> d[i];
-    --a[i];
-    --b[i];
   }
 
-  ll ans = 0;
-
-  foreach_comb(m, n, [&](int *indexes) {
-    ll cnt = 0;
-    for (int i = 0; i < q; i++) {
-      if (indexes[b[i]] - indexes[a[i]] == c[i]) {
-        cnt += d[i];
-      }
-    }
-
-    for (int i = 0; i < n; i++) {
-      cout << indexes[i] << ' ';
-    }
-
-    ans = max(ans, cnt);
-
-    cout << cnt << endl;
-  });
-
+  A[0] = 0;
+  dfs(1);
   cout << ans << endl;
 }
 
