@@ -8,44 +8,62 @@
 using namespace std;
 using ll = long long;
 
+struct Doubling {
+  const int LOG;
+  vector<vector<int> > table;
+
+  Doubling(int sz, int64_t lim_t)
+      : LOG(64 - __builtin_clzll(lim_t)) {  // countl_zero()
+    table.assign(LOG, vector<int>(sz, -1));
+  }
+
+  void set_next(int k, int x) { table[0][k] = x; }
+
+  void build() {
+    for (int k = 0; k + 1 < LOG; k++) {
+      for (int i = 0; i < table[k].size(); i++) {
+        if (table[k][i] == -1)
+          table[k + 1][i] = -1;
+        else
+          table[k + 1][i] = table[k][table[k][i]];
+      }
+    }
+  }
+
+  int query(int k, int64_t t) {
+    for (int i = LOG - 1; i >= 0; i--) {
+      if ((t >> i) & 1) k = table[i][k];
+    }
+    return k;
+  }
+};
+
 void solve() {
   string s;
   cin >> s;
   const int n = s.size();
-  vector<int> even(n, 1), odd(n, 1), eveno(n);
 
-  auto nextGen = [n, &s](auto& prev, auto& ne) {
-    ne.clear();
-    ne.resize(n);
-    for (int i = 0; i < n; i++) {
-      if (s[i] == 'R') {
-        ne[i + 1] += prev[i];
-      } else {
-        ne[i - 1] += prev[i];
-      }
-    }
-  };
+  Doubling db(n, 1e5);
 
-  for (int i = 1; i < 1e8; i++) {
-    if (i % 2 == 0) {
-      copy(even.begin(), even.end(), eveno.begin());
-      nextGen(odd, even);
+  for (int i = 0; i < n; i++) {
+    if (s[i] == 'R') {
+      db.set_next(i, i + 1);
     } else {
-      nextGen(even, odd);
+      db.set_next(i, i - 1);
     }
+  }
 
-    bool ok = true;
-    for (int i = 0; i < n; i++) {
-      ok = eveno[i] == even[i];
-      if (!ok) break;
-    }
-    if (ok) break;
+  db.build();
+
+  vector<int> sum(n);
+  for (int i = 0; i < n; i++) {
+    ++sum[db.query(i, 1e5)];
   }
 
   for (int i = 0; i < n - 1; i++) {
-    cout << even[i] << ' ';
+    cout << sum[i] << ' ';
   }
-  cout << even[n - 1] << endl;
+  cout << sum[n - 1] << endl;
 }
 
 int main() {
