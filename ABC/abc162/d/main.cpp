@@ -1,5 +1,3 @@
-#pragma GCC optimize("O3")
-#pragma GCC optimize("unroll-loops")
 #include <bits/stdc++.h>
 
 #define whole(f, x, ...)                                 \
@@ -29,17 +27,14 @@ void solve() {
     }
   }
 
-  int ans = 0;
+  ll ans = 0;
   for (auto i : r) {
     for (auto j : g) {
-      for (auto k : b) {
-        const int mi = min(i, min(j, k));
-        const int ma = max(i, max(j, k));
-        // int mo = i + j + k - mi - ma;
-        if (2 * (i + j + k - mi - ma) != mi + ma) {
-          ++ans;
-        }
-      }
+      int t = b.size();
+      if (b.find(2 * i - j) != b.end()) --t;
+      if (b.find(2 * j - i) != b.end()) --t;
+      if ((i + j) % 2 == 0 && b.find((i + j) / 2) != b.end()) --t;
+      ans += max(0, t);
     }
   }
   cout << ans << endl;
