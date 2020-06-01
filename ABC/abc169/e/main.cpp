@@ -11,11 +11,23 @@ using ll = long long;
 void solve() {
   int n;
   cin >> n;
-  vector<int> a(n), b(n);
-  for (int i = 0; i < n; i++) {
+  vector<ll> a(n + 1), b(n + 1);
+  for (int i = 1; i <= n; i++) {
     cin >> a[i] >> b[i];
   }
 
+  whole(sort, a);
+  whole(sort, b);
+
+  ll res;
+
+  if (n % 2 == 1) {
+    res = b[(n + 1) / 2] - a[(n + 1) / 2] + 1;
+  } else {
+    res = (b[n / 2] + b[n / 2 + 1]) - (a[n / 2] + a[n / 2 + 1]) + 1;
+  }
+
+  cout << res << endl;
 }
 
 int main() {
