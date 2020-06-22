@@ -8,55 +8,22 @@ void solve() {
   ll n;
   cin >> n;
 
-  vector<int> r(11);
-
-  ll s = 1;
   int di = 1;
-  while (n >= s) {
-    s *= 26;
+  while (n > pow(26, di)) {
+    n -= pow(26, di);
     ++di;
   }
 
-  for (int i = di; i >= 0; --i) {
-    const ll t = pow(26, i);
-    r[i] = n / t;
-    n %= t;
+  --n;
+
+  vector<int> r(di);
+  for (int i = 0; i < di; ++i) {
+    r[i] = n % 26;
+    n /= 26;
   }
 
-  int t = di;
-  while (r[t] == 0) {
-    --t;
-  }
-
-  for (int i = 0; i <= t; i++) {
-    if (r[i] != 0) continue;
-
-    bool ok = false;
-    for (int k = i; k < 11; k++) {
-      if (r[k] != 0) {
-        ok = true;
-        break;
-      }
-    }
-    if (ok == false) break;
-
-    int bs = 1;
-    while (r[i + bs] == 0) {
-      ++bs;
-    }
-    --r[i + bs];
-    for (int j = bs - 1; j >= 0; --j) {
-      r[i + j] = 26;
-    }
-  }
-
-  t = di;
-  while (r[t] == 0) {
-    --t;
-  }
-
-  for (int i = t; i >= 0; --i) {
-    cout << (char)('a' + r[i] - 1);
+  for (int i = di - 1; i >= 0; --i) {
+    cout << (r[i] == 0 ? 'a' : (char)('a' + r[i]));
   }
 
   cout << endl;
