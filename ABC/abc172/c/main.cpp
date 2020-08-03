@@ -8,38 +8,29 @@ void solve() {
   ll n, m, k;
   cin >> n >> m >> k;
 
-  vector<ll> a(n), b(m);
-  for (int i = 0; i < n; i++) {
+  vector<ll> a(n + 1), b(m + 1);
+  cin >> a[0];
+  for (int i = 1; i < n; i++) {
     cin >> a[i];
+    a[i] += a[i - 1];
   }
-  for (int i = 0; i < m; i++) {
+  cin >> b[0];
+  for (int i = 1; i < m; i++) {
     cin >> b[i];
+    b[i] += b[i - 1];
   }
 
-  vector<vector<ll>> dp(n + 1, vector(m + 1, k + 1));
-  dp[0][0] = 0;
-  dp[1][0] = a[0];
-  dp[0][1] = b[0];
-
+  int ans = 0;
+  int j = m - 1;
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m; j++) {
-      dp[i + 1][j] = min(dp[i + 1][j], dp[i][j] + a[i]);
-      dp[i][j + 1] = min(dp[i][j + 1], dp[i][j] + b[j]);
+    while (j >= 0 && a[i] + b[j] > k) {
+      j--;
     }
+    if (j < 0) break;
+    ans = max(ans, i + j + 2);
   }
 
-  dp[n][m] = min(dp[n - 1][m] + a[n - 1], dp[n][m - 1] + b[m - 1]);
-
-  ll cnt = 0;
-  for (int i = 0; i <= n; i++) {
-    for (int j = 0; j <= m; j++) {
-      if (dp[i][j] > k) break;
-
-      cnt = max(cnt, (ll)i + j);
-    }
-  }
-
-  cout << cnt << endl;
+  cout << ans << endl;
 }
 
 int main() {
